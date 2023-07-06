@@ -135,7 +135,6 @@ class StarrySky:
 
     def __init__(
         self,
-        host="127.0.0.1",
         port=7860,
         baseurl=None,
         sampler="Euler a",
@@ -144,12 +143,9 @@ class StarrySky:
         token=None,
     ):
         if not token:
-            raise ValueError("Token cannot be None or empty.")
-        if baseurl is None:
-            if use_https:
-                baseurl = f"https://{host}:{port}/sdapi/v1"
-            else:
-                baseurl = f"http://{host}:{port}/sdapi/v1"
+            raise ValueError("token cannot be None or empty.")
+        if not baseurl:
+            raise ValueError("baseurl cannot be None or empty")
 
         self.baseurl = baseurl
         self.default_sampler = sampler
@@ -340,7 +336,7 @@ class StarrySky:
             payload["alwayson_scripts"]["ControlNet"] = {"args": []}
 
         return self.post_and_get_api_result(
-            f"{self.baseurl}/txt2img", payload, use_async
+            self.baseurl, payload, use_async
         )
 
     def post_and_get_api_result(self, url, json, use_async):
