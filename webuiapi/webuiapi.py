@@ -141,9 +141,10 @@ class WebUIApi:
         sampler="Euler a",
         steps=20,
         use_https=False,
-        username=None,
-        password=None,
+        token=None,
     ):
+        if not token:
+            raise ValueError("Token cannot be None or empty.")
         if baseurl is None:
             if use_https:
                 baseurl = f"https://{host}:{port}/sdapi/v1"
@@ -156,10 +157,7 @@ class WebUIApi:
 
         self.session = requests.Session()
 
-        if username and password:
-            self.set_auth(username, password)
-        else:
-            self.check_controlnet()
+        self.set_auth(token)
 
     def check_controlnet(self):
         try:
@@ -168,8 +166,8 @@ class WebUIApi:
         except:
             pass
 
-    def set_auth(self, username, password):
-        self.session.auth = (username, password)
+    def set_auth(self, token):
+        self.session.headers.update({"Authorization": f"Bearer {token}"})
         self.check_controlnet()
 
     def _to_api_result(self, response):
