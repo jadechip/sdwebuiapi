@@ -39,7 +39,7 @@ class HiResUpscaler(str, Enum):
 
 
 @dataclass
-class WebUIApiResult:
+class StarrySkyResult:
     images: list
     parameters: dict
     info: dict
@@ -130,7 +130,7 @@ def raw_b64_img(image: Image) -> str:
     return str(base64.b64encode(bytes_data), "utf-8")
 
 
-class WebUIApi:
+class StarrySky:
     has_controlnet = False
 
     def __init__(
@@ -196,7 +196,7 @@ class WebUIApi:
         if "parameters" in r.keys():
             parameters = r["parameters"]
 
-        return WebUIApiResult(images, parameters, info)
+        return StarrySkyResult(images, parameters, info)
 
     async def _to_api_result_async(self, response):
         if response.status != 200:
@@ -224,7 +224,7 @@ class WebUIApi:
         if "parameters" in r.keys():
             parameters = r["parameters"]
 
-        return WebUIApiResult(images, parameters, info)
+        return StarrySkyResult(images, parameters, info)
 
     def txt2img(
         self,
@@ -799,8 +799,8 @@ class ModelKeywordResult:
 
 
 class ModelKeywordInterface:
-    def __init__(self, webuiapi):
-        self.api = webuiapi
+    def __init__(self, starrysky):
+        self.api = starrysky
 
     def get_keywords(self):
         result = self.api.custom_get("model_keyword/get_keywords")
@@ -813,8 +813,8 @@ class ModelKeywordInterface:
 
 # https://github.com/Klace/stable-diffusion-webui-instruct-pix2pix
 class InstructPix2PixInterface:
-    def __init__(self, webuiapi):
-        self.api = webuiapi
+    def __init__(self, starrysky):
+        self.api = starrysky
 
     def img2img(
         self,
@@ -851,8 +851,8 @@ class InstructPix2PixInterface:
 
 # https://github.com/Mikubill/sd-webui-controlnet
 class ControlNetInterface:
-    def __init__(self, webuiapi, show_deprecation_warning=True):
-        self.api = webuiapi
+    def __init__(self, starrysky, show_deprecation_warning=True):
+        self.api = starrysky
         self.show_deprecation_warning = show_deprecation_warning
 
     def print_deprecation_warning(self):

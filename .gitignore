@@ -1,4 +1,4 @@
 dist/
-webuiapi.egg-info/
+starrysky.egg-info/
 build/
 *.pyc

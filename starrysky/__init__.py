@@ -1,6 +1,6 @@
-from .webuiapi import (
-    WebUIApi,
-    WebUIApiResult,
+from .starrysky import (
+    StarrySky,
+    StarrySkyResult,
     Upscaler,
     HiResUpscaler,
     b64_img,
@@ -16,8 +16,8 @@ __version__ = "0.9.3"
 
 __all__ = [
     "__version__",
-    "WebUIApi",
-    "WebUIApiResult",
+    "StarrySky",
+    "StarrySkyResult",
     "Upscaler",
     "HiResUpscaler",
     "b64_img",

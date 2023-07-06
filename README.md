@@ -1,4 +1,4 @@
-# sdwebuiapi
+# sdstarrysky
 API client for AUTOMATIC1111/stable-diffusion-webui
 
 Supports txt2img, img2img, extra-single-image, extra-batch-images API calls.
@@ -14,32 +14,32 @@ API calls are (almost) direct translation from http://127.0.0.1:7860/docs as of 
 # Install
 
 ```
-pip install webuiapi
+pip install starrysky
 ```
 
 # Usage
 
-webuiapi_demo.ipynb contains example code with original images. Images are compressed as jpeg in this document.
+starrysky_demo.ipynb contains example code with original images. Images are compressed as jpeg in this document.
 
 ## create API client
 ```
-import webuiapi
+import starrysky
 
 # create API client
-api = webuiapi.WebUIApi()
+api = starrysky.StarrySky()
 
 # create API client with custom host, port
-#api = webuiapi.WebUIApi(host='127.0.0.1', port=7860)
+#api = starrysky.StarrySky(host='127.0.0.1', port=7860)
 
 # create API client with custom host, port and https
-#api = webuiapi.WebUIApi(host='webui.example.com', port=443, use_https=True)
+#api = starrysky.StarrySky(host='webui.example.com', port=443, use_https=True)
 
 # create API client with default sampler, steps.
-#api = webuiapi.WebUIApi(sampler='Euler a', steps=20)
+#api = starrysky.StarrySky(sampler='Euler a', steps=20)
 
 # optionally set username, password when --api-auth=username:password is set on webui.
 # username, password are not protected and can be derived easily if the communication channel is not encrypted.
-# you can also pass username, password to the WebUIApi constructor.
+# you can also pass username, password to the StarrySky constructor.
 api.set_auth('username', 'password')
 ```
 
@@ -54,7 +54,7 @@ result1 = api.txt2img(prompt="cute squirrel",
 #                      steps=30,
 #                      enable_hr=True,
 #                      hr_scale=2,
-#                      hr_upscaler=webuiapi.HiResUpscaler.Latent,
+#                      hr_upscaler=starrysky.HiResUpscaler.Latent,
 #                      hr_second_pass_steps=20,
 #                      hr_resize_x=1536,
 #                      hr_resize_y=1024,
@@ -114,7 +114,7 @@ inpainting_result.image
 ## extra-single-image
 ```
 result3 = api.extra_single_image(image=result2.image,
-                                 upscaler_1=webuiapi.Upscaler.ESRGAN_4x,
+                                 upscaler_1=starrysky.Upscaler.ESRGAN_4x,
                                  upscaling_resize=1.5)
 print(result3.image.size)
 result3.image
@@ -126,7 +126,7 @@ result3.image
 ## extra-batch-images
 ```
 result4 = api.extra_batch_images(images=[result1.image, inpainting_result.image],
-                                 upscaler_1=webuiapi.Upscaler.ESRGAN_4x,
+                                 upscaler_1=starrysky.Upscaler.ESRGAN_4x,
                                  upscaling_resize=1.5)
 result4.images[0]
 ```
@@ -330,7 +330,7 @@ r.image
 ### Extension support - Model-Keyword
 ```
 # https://github.com/mix1009/model-keyword
-mki = webuiapi.ModelKeywordInterface(api)
+mki = starrysky.ModelKeywordInterface(api)
 mki.get_keywords()
 ```
 ModelKeywordResult(keywords=['nousr robot'], model='robo-diffusion-v1.ckpt', oldhash='41fef4bd', match_source='model-keyword.txt')
@@ -382,7 +382,7 @@ img
 
 ```
 # txt2img with ControlNet (used 1.0 but also supports 1.1)
-unit1 = webuiapi.ControlNetUnit(input_image=img, module='canny', model='control_canny-fp16 [e3fe7712]')
+unit1 = starrysky.ControlNetUnit(input_image=img, module='canny', model='control_canny-fp16 [e3fe7712]')
 
 r = api.txt2img(prompt="photo of a beautiful girl", controlnet_units=[unit1])
 r.image
@@ -393,8 +393,8 @@ r.image
 
 ```
 # img2img with multiple ControlNets (used 1.0 but also supports 1.1)
-unit1 = webuiapi.ControlNetUnit(input_image=img, module='canny', model='control_canny-fp16 [e3fe7712]')
-unit2 = webuiapi.ControlNetUnit(input_image=img, module='depth', model='control_depth-fp16 [400750f6]', weight=0.5)
+unit1 = starrysky.ControlNetUnit(input_image=img, module='canny', model='control_canny-fp16 [e3fe7712]')
+unit2 = starrysky.ControlNetUnit(input_image=img, module='depth', model='control_depth-fp16 [400750f6]', weight=0.5)
 
 r2 = api.img2img(prompt="girl",
             images=[img], 
